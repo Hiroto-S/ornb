@@ -106,14 +106,13 @@ module Ornb
       org_to_html(dirs)
     end
 
-    desc 'say_hello', 'say hello'
-    def say_hello(*argv)
-      name = argv[0]
-      say_hello(name)
+    desc 'mk_toc', 'make ToC'
+    def mk_toc(*argv)
+      dirs = argv[0] || '**/*'
+      toc = ''
+      mk_toc
     end
-
-
-
+    
     private
     def find_file(link, i_num, line)
       unless File.exists?(link)
