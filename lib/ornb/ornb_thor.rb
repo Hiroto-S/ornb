@@ -13,14 +13,20 @@ module Ornb
 
     desc 'readme', 'make initial README.org'
     def readme(*argv)
-      setup = File.join(@lib,"theme-readtheorg.setup")
+      setup = "#{ENV['HOME']}/.emacs.d/org-mode/theme-readtheorg.setup"
       s_file = File.join(@lib, 'readme', 'README.org')
       p Dir.entries('.')
       if File.exists?('./README.org')
-        puts "README.org exists. "
+        puts setup.green
+        puts "README.org exists. ".red
       else
-        File.write('README.org',
-                   File.read(s_file).gsub('THEME_SETUP_FILE',setup))
+        FileUtils.cp(s_file, '.', verbose: true)
+      end
+      if File.exists?(setup)
+        puts "theme-readtheorg.setup exists. "
+      else
+        FileUtils.cp(File.join(@lib,File.basename(setup)), setup,
+                     verbose: true)
       end
     end
 
@@ -47,6 +53,8 @@ module Ornb
         FileUtils.cp(s_file, '.')
       end
     end
+
+
 
     desc 'tree', "tree [LEVEL=2] [DIR=\'.\']"
     def tree(*argv)
@@ -107,13 +115,12 @@ module Ornb
       org_to_html(dirs)
     end
 
-    desc 'mk_toc', 'make ToC'
-    def mk_toc(*argv)
-      dirs = argv[0] || '**/*'
-      toc = ''
-      mk_toc
+    desc 'say_hello', 'say hello'
+    def say_hello(*argv)
+      name = argv[0] || 'body'
+      puts "Hello #{name}."
     end
-    
+
     private
     def find_file(link, i_num, line)
       unless File.exists?(link)
